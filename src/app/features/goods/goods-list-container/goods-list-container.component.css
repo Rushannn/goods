@@ -1,0 +1,9 @@
+.goods-list-wrapper {
+  position: relative;
+}
+
+.add-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}

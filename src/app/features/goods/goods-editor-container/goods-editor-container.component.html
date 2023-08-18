@@ -1,0 +1,7 @@
+<ng-container *ngrxLet="editedProduct$ as editedProduct">
+  <app-goods-editor-view
+    [editedProduct]="editedProduct"
+    (saveEditorForm)="onSaveEditorForm($event)"
+    (closeEditorForm)="onCloseEditorForm()"
+  ></app-goods-editor-view>
+</ng-container>

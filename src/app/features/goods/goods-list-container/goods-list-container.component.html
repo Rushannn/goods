@@ -1,0 +1,35 @@
+<div class="goods-list-wrapper">
+  <ng-container
+    *ngrxLet="{
+      goods: goods$,
+      status: status$
+    } as vm"
+  >
+    <app-goods-list-view
+      [vm]="vm"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+    ></app-goods-list-view>
+
+    <button type="button" class="btn btn-outline-dark add-btn"
+    (click)="onAddProduct()"
+    >add</button>
+  </ng-container>
+
+  <ng-container *ngIf="modalOpened">
+    <div
+      class="modal"
+      id="editorModal"
+      tabindex="-1"
+      role="dialog"
+      style="display: block"
+    >
+      <app-goods-editor-container
+        [productIdOnEdit]="productIdOnEdit"
+        (saveEditorForm)="onsaveEditorForm($event)"
+        (closeEditorForm)="onCloseEditorForm()"
+      ></app-goods-editor-container>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+  </ng-container>
+</div>
