@@ -6,6 +6,7 @@ import { catchError, exhaustMap, map, switchMap } from "rxjs/operators";
 import { GoodsDTO } from "../models/goods-dto.model";
 import { goodsDTOAdapter } from "../models/goods-dto.adapter";
 import { of } from "rxjs";
+import { NewProduct } from "../goods-editor-view/goods-editor-view.component";
 
 export const loadGoods$ = createEffect(
   (actions$ = inject(Actions), httpService = inject(HttpService)) => {
@@ -50,4 +51,33 @@ export const editProduct$ = createEffect(
     )
   },
   { functional: true }
+)
+
+export const addProduct$ = createEffect(
+  (actions$ = inject(Actions), httpService = inject(HttpService)) => {
+    return actions$.pipe(
+      ofType(GoodsActions.addProduct),
+      switchMap(
+        ({ newProduct }) => {
+          const { basae64Image, productId, ...otherFields } = newProduct;
+          const product = { product_id: productId, ...otherFields }
+          return httpService.post<GoodsDTO, any>('goods', product )
+            .pipe(
+              switchMap((createdProduct) => {
+                const payload = { id: createdProduct.id, content: basae64Image }
+                return httpService.post<GoodsDTO, any>('goods/upload/image', payload)
+                  .pipe(
+                    map(res => GoodsActions.addProductSuccess({
+                      product: goodsDTOAdapter.DTOToEntity(res)
+                    })),
+                    catchError(error =>
+                      of(GoodsActions.addProductFailure({ error }))
+                    )
+                  )
+              })
+            )
+        }
+      )
+    )
+  }, { functional: true }
 )

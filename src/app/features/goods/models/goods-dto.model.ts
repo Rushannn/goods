@@ -6,7 +6,6 @@ export type GoodsDTO = {
   price: string
   quantity: number
   image: {
-    url?: string,
-    base64?: string
+    url: string
   }
 }

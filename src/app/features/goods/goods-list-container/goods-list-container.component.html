@@ -7,13 +7,17 @@
   >
     <app-goods-list-view
       [vm]="vm"
-      (edit)="onEdit($event)"
+      (edit)="onOpenEditProduct($event)"
       (delete)="onDelete($event)"
     ></app-goods-list-view>
 
-    <button type="button" class="btn btn-outline-dark add-btn"
-    (click)="onAddProduct()"
-    >add</button>
+    <button
+      type="button"
+      class="btn btn-outline-dark add-btn"
+      (click)="onOpenAddProduct()"
+    >
+      add
+    </button>
   </ng-container>
 
   <ng-container *ngIf="modalOpened">
@@ -26,7 +30,8 @@
     >
       <app-goods-editor-container
         [productIdOnEdit]="productIdOnEdit"
-        (saveEditorForm)="onsaveEditorForm($event)"
+        (editProduct)="onEditProduct($event)"
+        (addProduct)="onAddProduct($event)"
         (closeEditorForm)="onCloseEditorForm()"
       ></app-goods-editor-container>
     </div>

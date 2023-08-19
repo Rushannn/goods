@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoodsEditorViewComponent } from '../goods-editor-view/goods-editor-view.component';
+import { GoodsEditorViewComponent, NewProduct } from '../goods-editor-view/goods-editor-view.component';
 import { Store, select } from '@ngrx/store';
 import { selectGoodById } from '../store/goods.reducer';
 import { Observable } from 'rxjs';
@@ -19,28 +19,32 @@ import { LetDirective } from '@ngrx/component';
   styleUrls: ['./goods-editor-container.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GoodsEditorContainerComponent implements OnInit{
+export class GoodsEditorContainerComponent implements OnInit {
 
   @Input() productIdOnEdit!: number | null
-  @Output() saveEditorForm = new EventEmitter;
+  @Output() editProduct = new EventEmitter;
+  @Output() addProduct = new EventEmitter;
   @Output() closeEditorForm = new EventEmitter;
 
   private readonly store = inject(Store);
-  public editedProduct$!: Observable<GoodsEntity | undefined>
+  public productForChange$!: Observable<GoodsEntity | undefined>
 
   ngOnInit(): void {
     this.setEditedProduct()
   }
 
-
   setEditedProduct() {
     if (this.productIdOnEdit) {
-      this.editedProduct$ = this.store.select(selectGoodById(this.productIdOnEdit))
+      this.productForChange$ = this.store.select(selectGoodById(this.productIdOnEdit))
     }
   }
 
-  onSaveEditorForm(event: Event) {
-    this.saveEditorForm.emit(event);
+  onEditProduct(event: Event) {
+    this.editProduct.emit(event)
+  }
+
+  onAddProduct(newProduct: NewProduct) {
+    this.addProduct.emit(newProduct)
   }
 
   onCloseEditorForm() {

@@ -8,6 +8,7 @@ import { LoadingStatus, selectAllGoods, selectGoodsStatus } from '../store/goods
 import { GoodsListViewComponent } from '../goods-list-view/goods-list-view.component';
 import { LetDirective } from '@ngrx/component';
 import { GoodsEditorContainerComponent } from '../goods-editor-container/goods-editor-container.component';
+import { NewProduct } from '../goods-editor-view/goods-editor-view.component';
 
 @Component({
   selector: 'app-goods-list-container',
@@ -34,7 +35,6 @@ export class GoodsListContainerComponent {
     this.init()
   }
 
-
   private init() {
     this.store.dispatch(GoodsActions.loadGoods())
   }
@@ -47,15 +47,25 @@ export class GoodsListContainerComponent {
     this.modalOpened = false;
   }
 
-  onsaveEditorForm(event: Event) {
+  onOpenEditProduct(id: number) {
+    this.productIdOnEdit = id;
+    this.openEditorModal()
+  }
+
+  onEditProduct(event: Event) {
     this.closeEditorModal();
     this.productIdOnEdit = null;
     this.store.dispatch(GoodsActions.editProduct({ product: event }))
   }
 
-  onEdit(id: number) {
-    this.productIdOnEdit = id;
+  onOpenAddProduct() {
     this.openEditorModal()
+  }
+
+  onAddProduct(newProduct: NewProduct) {
+    this.closeEditorModal();
+    console.log(newProduct)
+    this.store.dispatch(GoodsActions.addProduct({ newProduct }))
   }
 
   onDelete(id: number) {
@@ -67,7 +77,4 @@ export class GoodsListContainerComponent {
     this.productIdOnEdit = null;
   }
 
-  onAddProduct() {
-    this.openEditorModal()
-  }
 }

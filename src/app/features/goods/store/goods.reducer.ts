@@ -59,6 +59,12 @@ export const goodsFeature = createFeature({
       status: 'error' as const
     })),
 
+    on(GoodsActions.addProductSuccess, (state, { product }) =>
+      goodsAdapter.addOne(product, {
+        ...state
+      })
+    ),
+
   )
 });
 

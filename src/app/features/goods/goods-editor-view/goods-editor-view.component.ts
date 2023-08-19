@@ -16,9 +16,10 @@ import { GoodsEntity } from '../models/goods-entity';
 })
 export class GoodsEditorViewComponent implements OnInit {
 
-  @Input() editedProduct: GoodsEntity | undefined
+  @Input() productForChange: GoodsEntity | undefined
 
-  @Output() saveEditorForm = new EventEmitter;
+  @Output() editProduct = new EventEmitter;
+  @Output() addProduct = new EventEmitter<NewProduct>;
   @Output() closeEditorForm = new EventEmitter;
 
   public base64Image: string | null = null;
@@ -34,12 +35,12 @@ export class GoodsEditorViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.editedProduct) {
+    if (this.productForChange) {
       this.formGroup.patchValue({
-        name: this.editedProduct.name,
-        price: this.editedProduct.price,
-        quantity: this.editedProduct.quantity,
-        productId: this.editedProduct.productId
+        name: this.productForChange.name,
+        price: this.productForChange.price,
+        quantity: this.productForChange.quantity,
+        productId: this.productForChange.productId
       })
     }
   }
@@ -49,16 +50,11 @@ export class GoodsEditorViewComponent implements OnInit {
   }
 
   onSaveEditorForm() {
-    const product = {
-      id: this.editedProduct!.id,
-      name: this.formGroup.value.name,
-      price: this.formGroup.value.price,
-      quantity: this.formGroup.value.quantity,
-      productId: this.formGroup.value.productId,
-      _image: this.base64Image
+    if (this.productForChange) {
+      this.sendEditedProduct()
+    } else {
+      this.sendNewProduct()
     }
-    this.saveEditorForm.emit(product)
-    console.log('ok1', product)
   }
 
   onFileSelected(event: Event): void {
@@ -66,11 +62,43 @@ export class GoodsEditorViewComponent implements OnInit {
     if (inputElement.files && inputElement.files.length > 0) {
       const reader = new FileReader();
       reader.onload = (e) => {
-
         this.base64Image = e.target?.result as string;
       };
       reader.readAsDataURL(inputElement.files[0]);
     }
   }
 
+  private sendEditedProduct() {
+    const product = {
+      id: this.productForChange!.id,
+      name: this.formGroup.value.name,
+      price: this.formGroup.value.price,
+      quantity: this.formGroup.value.quantity,
+      productId: this.formGroup.value.productId
+    }
+    this.editProduct.emit(product)
+    console.log('ok1', product)
+  }
+
+  private sendNewProduct() {
+    if (this.base64Image) {
+      const newProduct = {
+        name: this.formGroup.value.name,
+        price: this.formGroup.value.price,
+        quantity: this.formGroup.value.quantity,
+        productId: this.formGroup.value.productId,
+        basae64Image: this.base64Image
+      }
+      this.addProduct.emit(newProduct)
+    }
+  }
+
+}
+
+export interface NewProduct {
+  name: string,
+  price: string,
+  quantity: number,
+  productId: number,
+  basae64Image: string
 }

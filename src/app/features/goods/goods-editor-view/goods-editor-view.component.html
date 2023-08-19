@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-lg" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title">{{editedProduct? "Edit product" :"Add new product"}}</h5>
+      <h5 class="modal-title">{{productForChange? "Edit product" :"Add new product"}}</h5>
       <button type="button" class="close" (click)="closeEditorModal()">
         <span>&times;</span>
       </button>
@@ -28,7 +28,7 @@
           <input formControlName="quantity" class="form-control form-control-sm" autocomplete="off">
         </div>
 
-        <div class="mb-3" *ngIf="!editedProduct">
+        <div class="mb-3" *ngIf="!productForChange">
           <label for="fileInput" class="form-label fs-4 pr-2">Add Image</label>
           <input type="file" accept="image/*" (change)="onFileSelected($event)" id="fileInput">
         </div>
