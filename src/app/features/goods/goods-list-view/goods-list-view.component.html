@@ -12,7 +12,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ good.name }}</h5>
               <div><span class="card-text">ProductId: #{{ good.productId}}</span></div>
-              <div><span class="card-text">Price: {{ good.price }}</span></div>
+              <div><span class="card-text">Price: {{ good.price | currency:'USD' }}</span></div>
               <div><span class="card-text">Quantity: {{ good.quantity }}</span></div>
               <div class="row justify-content-around">
                 <a href="#" class="card-link" (click)="onEdit(good.id, $event)">

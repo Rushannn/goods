@@ -40,8 +40,7 @@ export const goodsFeature = createFeature({
     })),
 
     on(GoodsActions.editProduct, (state) => ({
-      ...state,
-      status: 'loading' as const
+      ...state
     })),
 
     on(GoodsActions.editProductSuccess, (state, { product }) =>
@@ -49,15 +48,9 @@ export const goodsFeature = createFeature({
         id: product.id,
         changes: product
       }, {
-        ...state,
-        status: 'loaded' as const
+        ...state
       })
     ),
-
-    on(GoodsActions.editProductFailure, (state) => ({
-      ...state,
-      status: 'error' as const
-    })),
 
     on(GoodsActions.addProductSuccess, (state, { product }) =>
       goodsAdapter.addOne(product, {

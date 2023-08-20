@@ -24,13 +24,14 @@ export class GoodsEditorViewComponent implements OnInit {
 
   public base64Image: string | null = null;
   public formGroup!: FormGroup
+  public submitAttempted = false;
 
   constructor() {
     this.formGroup = new FormBuilder().group({
-      name: new FormControl('', [Validators.required]),
-      price: new FormControl('', [Validators.required]),
-      quantity: new FormControl('', [Validators.required]),
-      productId: new FormControl('', [Validators.required])
+      name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
+      price: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]),
+      quantity: new FormControl(0, [Validators.required, Validators.min(1)]),
+      productId: new FormControl(0, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)])
     });
   }
 
@@ -49,7 +50,8 @@ export class GoodsEditorViewComponent implements OnInit {
     this.closeEditorForm.emit()
   }
 
-  onSaveEditorForm() {
+  onSubmit() {
+    this.submitAttempted = true;
     if (this.productForChange) {
       this.sendEditedProduct()
     } else {
@@ -93,6 +95,13 @@ export class GoodsEditorViewComponent implements OnInit {
     }
   }
 
+}
+
+export interface Product {
+  name: string,
+  price: string,
+  quantity: number,
+  productId: number
 }
 
 export interface NewProduct {
