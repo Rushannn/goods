@@ -65,6 +65,10 @@ export const goodsFeature = createFeature({
       })
     ),
 
+    on(GoodsActions.deleteProductSuccess, (state, { id }) =>
+      goodsAdapter.removeOne(id, { ...state })
+    )
+
   )
 });
 

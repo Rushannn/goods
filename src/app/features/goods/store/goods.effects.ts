@@ -61,7 +61,7 @@ export const addProduct$ = createEffect(
         ({ newProduct }) => {
           const { basae64Image, productId, ...otherFields } = newProduct;
           const product = { product_id: productId, ...otherFields }
-          return httpService.post<GoodsDTO, any>('goods', product )
+          return httpService.post<GoodsDTO, any>('goods', product)
             .pipe(
               switchMap((createdProduct) => {
                 const payload = { id: createdProduct.id, content: basae64Image }
@@ -80,4 +80,25 @@ export const addProduct$ = createEffect(
       )
     )
   }, { functional: true }
+)
+
+export const delete$ = createEffect(
+  (actions$ = inject(Actions), httpService = inject(HttpService)) => {
+    return actions$.pipe(
+      ofType(GoodsActions.deleteProduct),
+      switchMap(
+        ({ id }) => {
+          return httpService.delete<number>(`/goods/${id}`)
+            .pipe(
+              map(() => GoodsActions.deleteProductSuccess({id})
+              ),
+              catchError(error =>
+                of(GoodsActions.deleteProductFailure({ error }))
+              )
+            )
+        }
+      )
+    )
+  },
+  { functional: true }
 )

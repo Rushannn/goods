@@ -70,6 +70,7 @@ export class GoodsListContainerComponent {
 
   onDelete(id: number) {
     console.log('this product must be delete', id)
+    this.store.dispatch(GoodsActions.deleteProduct({ id }))
   }
 
   onCloseEditorForm() {

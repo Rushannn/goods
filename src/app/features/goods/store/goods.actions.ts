@@ -15,8 +15,8 @@ export const GoodsActions = createActionGroup({
     'Add Product': props<{ newProduct: NewProduct}>(),
     'Add Product Success': props<{ product: GoodsEntity }>(),
     'AddProduct Failure': props<{ error: string }>(),
-    'Delete Product': props<{ id: string }>(),
-    'Delete Success': props<{ id: string }>(),
-    'Delete Failure': props<{ error: string }>(),
+    'Delete Product': props<{ id: number }>(),
+    'Delete Product Success': props<{ id: number }>(),
+    'Delete Product Failure': props<{ error: string }>(),
   },
 });

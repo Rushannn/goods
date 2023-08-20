@@ -21,4 +21,8 @@ export class HttpService {
     return this.http.post<T>(`${this.apiUrl}/${url}`, data);
   }
 
+  public delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(`${this.apiUrl}${url}`);
+  }
+
 }
