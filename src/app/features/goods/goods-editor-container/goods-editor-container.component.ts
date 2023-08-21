@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoodsEditorViewComponent, NewProduct } from '../goods-editor-view/goods-editor-view.component';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { selectGoodById } from '../store/goods.reducer';
 import { Observable } from 'rxjs';
 import { GoodsEntity } from '../models/goods-entity';

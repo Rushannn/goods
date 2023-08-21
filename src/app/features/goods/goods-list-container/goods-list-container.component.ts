@@ -52,10 +52,10 @@ export class GoodsListContainerComponent {
     this.openEditorModal()
   }
 
-  onEditProduct(event: Event) {
+  onEditProduct(product: GoodsEntity) {
     this.closeEditorModal();
     this.productIdOnEdit = null;
-    this.store.dispatch(GoodsActions.editProduct({ product: event }))
+    this.store.dispatch(GoodsActions.editProduct({ product }))
   }
 
   onOpenAddProduct() {
@@ -64,7 +64,6 @@ export class GoodsListContainerComponent {
 
   onAddProduct(newProduct: NewProduct) {
     this.closeEditorModal();
-    console.log(newProduct)
     this.store.dispatch(GoodsActions.addProduct({ newProduct }))
   }
 

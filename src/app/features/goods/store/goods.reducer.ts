@@ -69,10 +69,7 @@ export const selectGoodsState =
   createFeatureSelector<GoodsState>(GOODS_FEATURE_KEY);
 
 const {
-  selectIds,
-  selectEntities,
-  selectAll,
-  selectTotal,
+  selectAll
 } = goodsAdapter.getSelectors();
 
 export const selectAllGoods = createSelector(

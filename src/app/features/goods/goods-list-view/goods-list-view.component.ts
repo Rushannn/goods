@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GoodsEntity } from '../models/goods-entity';
 import { GoodsListVM } from './goods-list-view-model';
 
 @Component({

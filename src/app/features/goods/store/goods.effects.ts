@@ -6,7 +6,6 @@ import { catchError, exhaustMap, map, switchMap } from "rxjs/operators";
 import { GoodsDTO } from "../models/goods-dto.model";
 import { goodsDTOAdapter } from "../models/goods-dto.adapter";
 import { of } from "rxjs";
-import { NewProduct } from "../goods-editor-view/goods-editor-view.component";
 
 export const loadGoods$ = createEffect(
   (actions$ = inject(Actions), httpService = inject(HttpService)) => {
@@ -36,7 +35,7 @@ export const editProduct$ = createEffect(
       ofType(GoodsActions.editProduct),
       switchMap(
         ({ product }) => {
-          return httpService.post<GoodsDTO, any>(`goods/${product.id}`, goodsDTOAdapter.entityToDTO(product))
+          return httpService.post<GoodsDTO, GoodsDTO>(`goods/${product.id}`, goodsDTOAdapter.entityToDTO(product))
             .pipe(
               map(
                 goodsDto => GoodsActions.editProductSuccess({
@@ -61,11 +60,19 @@ export const addProduct$ = createEffect(
         ({ newProduct }) => {
           const { basae64Image, productId, ...otherFields } = newProduct;
           const product = { product_id: productId, ...otherFields }
-          return httpService.post<GoodsDTO, any>('goods', product)
+          return httpService.post<GoodsDTO, {
+            name: string;
+            price: string;
+            quantity: number;
+            product_id: number;
+        }>('goods', product)
             .pipe(
               switchMap((createdProduct) => {
                 const payload = { id: createdProduct.id, content: basae64Image }
-                return httpService.post<GoodsDTO, any>('goods/upload/image', payload)
+                return httpService.post<GoodsDTO, {
+                  id: number;
+                  content: string;
+              }>('goods/upload/image', payload)
                   .pipe(
                     map(res => GoodsActions.addProductSuccess({
                       product: goodsDTOAdapter.DTOToEntity(res)

@@ -17,7 +17,6 @@ export class HttpService {
   }
 
   post<T, D>(url: string, data: D): Observable<T> {
-    console.log(JSON.stringify(data))
     return this.http.post<T>(`${this.apiUrl}/${url}`, data);
   }
 
